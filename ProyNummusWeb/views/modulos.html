@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mis Módulos</title>
+    <link rel="stylesheet" href="styles.css"> <!-- Enlazar archivo de estilos CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+   /* Estilos adicionales para las cards */
+   .card {
+    position: relative;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin: 20px;
+    width: 200px;
+    height: 180px;
+    text-align: center;
+    text-decoration: none;
+    color: #333;
+    display: inline-block;
+    vertical-align: top;
+    position: relative;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+.card h2 {
+    margin: 0;
+    font-size: 18px;
+}
+
+.lock-icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: none; /* Inicialmente oculto */
+}
+
+.disabled .lock-icon {
+    display: block; /* Mostrar solo si la card está deshabilitada */
+}
+
+.disabled {
+    pointer-events: none;
+    opacity: 0.5;
+}
+
+.lock-icon i {
+    font-size: 24px;
+    color: #ccc;
+}
+        .dropdown-container {
+            position: absolute;
+            top: 20px; /* Ajusta según sea necesario */
+            right: 20px; /* Ajusta según sea necesario */
+        }
+
+        .dropdown {
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 160px;
+            box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+            z-index: 1;
+        }
+
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #f1f1f1;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .dropbtn {
+            background-color: transparent;
+            color: black;
+            padding: 16px;
+            font-size: 16px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh; /* Ajusta la altura como desees */
+        }
+    </style>
+</head>
+<body>
+    <div class="dropdown-container">
+        <div class="dropdown">
+            <button class="dropbtn">Nombre de Usuario</button>
+            <div class="dropdown-content">
+                <a href="#" id="logout">Cerrar sesión</a>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <h1>Quiero aprender:</h1>
+        <div class="cards">
+            <a href="#" class="card" data-level="basico">
+                <h2>Básico</h2>
+                <div class="lock-icon"><i class="fas fa-lock"></i></div>
+            </a>
+            <a href="#" class="card" data-level="conocedor">
+                <h2>Conocedor</h2>
+                <div class="lock-icon"><i class="fas fa-lock"></i></div>
+            </a>
+            <a href="#" class="card" data-level="conversador">
+                <h2>Conversador</h2>
+                <div class="lock-icon"><i class="fas fa-lock"></i></div>
+            </a>
+            <a href="#" class="card" data-level="experto">
+                <h2>Experto</h2>
+                <div class="lock-icon"><i class="fas fa-lock"></i></div>
+            </a>
+        </div>
+    </div>
+<script>
+    // Cuando la página se carga completamente
+    window.addEventListener('load', () => {
+        // Recuperar el nombre y nivel del usuario del localStorage
+        const userName = localStorage.getItem('userName');
+        const userLevel = localStorage.getItem('userLevel'); // Nivel del usuario (básico, conocedor, conversador, experto)
+
+        // Imprimir el nombre y nivel del usuario en la consola
+        console.log('userName:', userName);
+        console.log('userLevel:', userLevel);
+
+        // Definir un mapa para los niveles
+        const levels = {
+            "basico": 1,
+            "conocedor": 2,
+            "conversador": 3,
+            "experto": 4
+        };
+
+        // Obtener el botón del menú desplegable
+        const dropbtn = document.querySelector('.dropbtn');
+        
+        // Establecer el nombre del usuario como el texto del botón con un saludo
+        if (userName) {
+            dropbtn.innerHTML = `Hola, <strong>${userName}</strong>`;
+        }
+
+        // Obtener todas las cards
+        const cards = document.querySelectorAll('.card');
+        
+        // Eliminar la clase 'disabled' de todas las cards
+cards.forEach(card => {
+    card.classList.remove('disabled');
+});
+
+        // Habilitar o deshabilitar cards según el nivel del usuario
+        cards.forEach(card => {
+            const cardLevel = card.getAttribute('data-level');
+            if (levels[userLevel] < levels[cardLevel]) {
+                card.classList.add('disabled');
+            }
+        });
+
+        // Obtener el enlace de "Cerrar sesión"
+        const logoutLink = document.getElementById('logout');
+
+        // Agregar un event listener para el enlace de "Cerrar sesión"
+        logoutLink.addEventListener('click', (event) => {
+            event.preventDefault(); // Evita el comportamiento predeterminado del enlace
+
+            // Eliminar los datos del localStorage
+            localStorage.removeItem('userId');
+            localStorage.removeItem('userName');
+            localStorage.removeItem('userLevel');
+
+            // Redirigir al usuario a la página de inicio de sesión
+            window.location.href = '/login.html'; // Cambia la ruta a la que desees redirigir al usuario
+        });
+    });
+</script>
+</body>
+</html>

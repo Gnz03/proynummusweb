@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página de Aprendizaje</title>
+    <link rel="stylesheet" href="../styles/style2.css">
+    <title>Módulos</title>
+    <style>
+        @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;400&display=swap");
+
+body {
+    font-family: "Poppins", sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #b8c6db;
+    background-image: linear-gradient(315deg, #b8c6db 0%, #f5f7fa 100%);
+}
+
+.container {
+    text-align: center;
+}
+
+h1 {
+    margin-bottom: 120px;
+    font-size: 42px;
+    font-family: "Poppins", sans-serif;
+}
+
+.cards {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    max-width: 900px; 
+    margin: 0 auto;
+    flex-wrap: nowrap; 
+    max-width: 100%; 
+    overflow-x: auto; 
+}
+
+.card {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin: 10px;
+    width: 200px;
+    height: 180px;
+    text-align: center;
+}
+
+.card img {
+    width: 80px; /* Ajusta el tamaño deseado */
+    height: 60px; /* Ajusta el tamaño deseado */
+    border-radius: 8px;
+    margin-bottom: 10px;
+    margin-top: 30px;
+}
+
+.card h2 {
+    margin: 0;
+    font-size: 18px;
+}
+
+/**//* Ajustes para el dropdown */
+.dropdown-container {
+    position: absolute;
+    top: 20px; /* Ajusta según sea necesario */
+    right: 120px; /* Ajusta según sea necesario */
+}
+
+.dropdown {
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown-content a:hover {
+    background-color: #f1f1f1;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.dropbtn {
+    background-color: transparent;
+    color: black;
+    padding: 16px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+}
+    </style>
+</head>
+<body> 
+    <div class="dropdown-container">
+        <div class="dropdown">
+            <button class="dropbtn">Nombre de Usuario</button>
+            <div class="dropdown-content">
+                <a href="#" id="logout">Cerrar sesión</a>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <h1>Quiero aprender:</h1>
+        <div class="cards">
+            <a href="saving.html" class="card">
+                <img src="saving.png" alt="Ahorro">
+                <h2>Ahorro</h2>
+            </a>
+            <a href="budget.html" class="card">
+                <img src="budget.png" alt="Presupuesto">
+                <h2>Presupuesto</h2>
+            </a>
+            <a href="investment.html" class="card">
+                <img src="investment.png" alt="Inversión">
+                <h2>Inversión</h2>
+            </a>
+            <a href="credit.html" class="card">
+                <img src="credit.png" alt="Crédito">
+                <h2>Crédito</h2>
+            </a>
+        </div>
+    </div>
+    <script>
+   // Cuando la página se carga completamente
+window.addEventListener('load', () => {
+    // Recuperar el nombre del usuario del localStorage
+    const userName = localStorage.getItem('userName');
+    
+    // Obtener el botón del menú desplegable
+    const dropbtn = document.querySelector('.dropbtn');
+    
+    // Establecer el nombre del usuario como el texto del botón
+    if (userName) {
+        dropbtn.textContent = `Hola, ${userName}`;
+    }
+
+    // Obtener el enlace de "Cerrar sesión"
+    const logoutLink = document.getElementById('logout');
+
+    // Agregar un event listener para el enlace de "Cerrar sesión"
+    logoutLink.addEventListener('click', (event) => {
+        event.preventDefault(); // Evita el comportamiento predeterminado del enlace
+
+        // Eliminar los datos del localStorage
+        localStorage.removeItem('userId');
+        localStorage.removeItem('userName');
+
+        // Redirigir al usuario a la página de inicio de sesión
+        window.location.href = '/login.html'; // Cambia la ruta a la que desees redirigir al usuario
+    });
+});
+</script>
+</body>
+</html>
