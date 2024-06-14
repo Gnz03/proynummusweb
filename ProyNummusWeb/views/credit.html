@@ -245,6 +245,8 @@ const updateProgressBar = () => {
         };
 loadQuiz();
 
+
+//actualizacion del nivel 
 submitButton.addEventListener("click", async () => {
             const answer = getSelected();
             if (answer) {
@@ -282,14 +284,14 @@ submitButton.addEventListener("click", async () => {
 
                                  // Guardar el nuevo nivel en localStorage
                                 localStorage.setItem('userLevel', nuevoNivel);
-                                return true;  // Indica éxito
+                                return true;  
                             } else {
                                 console.error('Error al actualizar el nivel de usuario:', response.statusText);
-                                return false;  // Indica fallo
+                                return false; 
                             }
                         } catch (error) {
                             console.error('Error al procesar la solicitud:', error);
-                            return false;  // Indica fallo
+                            return false; 
                         }
                     };
                     

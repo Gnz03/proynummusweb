@@ -3,9 +3,6 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 function obtenerNombreUsuario() {
-    // Aquí deberías obtener el nombre de usuario de alguna manera
-    // Por ejemplo, desde una variable global o una cookie
-    // Simularemos un nombre de usuario aquí
     const nombreUsuario = "Usuario Ejemplo";
     return nombreUsuario;
 }

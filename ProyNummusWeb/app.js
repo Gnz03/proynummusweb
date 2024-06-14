@@ -18,10 +18,13 @@ const config = {
     password: '1234'
 };
 const pool = new mssql.ConnectionPool(config);
+
 // Crear la conexión a la base de datos
 const connection = new mssql.ConnectionPool(config);
 // Middleware para parsear el cuerpo de las solicitudes como JSON
 app.use(express.json()); // Usar express.json() para analizar los datos JSON
+
+
 /// Ruta para actualizar el nivel de usuario
 app.post('/actualizar-nivel', async (req, res) => {
     const { userId, nuevoNivel } = req.body;
@@ -114,7 +117,7 @@ app.listen(port, () => {
     console.log(`Servidor escuchando en http://localhost:${port}`);
 });
 
-//
+//Pruebas
 
 // Establecer el endpoint API para obtener las preguntas
 app.get('/api/preguntas', async (req, res) => {

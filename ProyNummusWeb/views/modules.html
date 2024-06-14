@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Página de Aprendizaje</title>
-    <link rel="stylesheet" href="../styles/style2.css">
     <title>Módulos</title>
     <style>
         @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;400&display=swap");
@@ -54,8 +53,8 @@ h1 {
 }
 
 .card img {
-    width: 80px; /* Ajusta el tamaño deseado */
-    height: 60px; /* Ajusta el tamaño deseado */
+    width: 80px; 
+    height: 60px; 
     border-radius: 8px;
     margin-bottom: 10px;
     margin-top: 30px;
@@ -66,24 +65,32 @@ h1 {
     font-size: 18px;
 }
 
-/**//* Ajustes para el dropdown */
+
 .dropdown-container {
     position: absolute;
-    top: 20px; /* Ajusta según sea necesario */
-    right: 120px; /* Ajusta según sea necesario */
+    top: 20px; 
+    right: 300px; 
+    font-family: 'Poppins', sans-serif; 
 }
 
 .dropdown {
     display: inline-block;
+    font-size: 18px; 
+    background-color: #dce6f5;
+    border: 1px solid #000000; 
+    border-radius: 5px; 
 }
 
 .dropdown-content {
     display: none;
     position: absolute;
-    background-color: #f9f9f9;
+    background-color: #dce6f5; 
     min-width: 160px;
     box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
     z-index: 1;
+    font-family: 'Poppins', sans-serif; 
+    
+    transition: background-color 0.3s; /
 }
 
 .dropdown-content a {
@@ -91,10 +98,11 @@ h1 {
     padding: 12px 16px;
     text-decoration: none;
     display: block;
+    font-size: inherit;
 }
 
 .dropdown-content a:hover {
-    background-color: #f1f1f1;
+    background-color: #b3d7ff; 
 }
 
 .dropdown:hover .dropdown-content {
@@ -105,7 +113,7 @@ h1 {
     background-color: transparent;
     color: black;
     padding: 16px;
-    font-size: 16px;
+    font-size: 18px;
     border: none;
     cursor: pointer;
 }
@@ -121,7 +129,7 @@ h1 {
         </div>
     </div>
     <div class="container">
-        <h1>Quiero aprender:</h1>
+        <h1>Toma la prueba de nivelacion:</h1>
         <div class="cards">
             <a href="saving.html" class="card">
                 <img src="saving.png" alt="Ahorro">
@@ -150,24 +158,25 @@ window.addEventListener('load', () => {
     // Obtener el botón del menú desplegable
     const dropbtn = document.querySelector('.dropbtn');
     
-    // Establecer el nombre del usuario como el texto del botón
+    // Establecer el dropdown
     if (userName) {
-        dropbtn.textContent = `Hola, ${userName}`;
-    }
+    dropbtn.innerHTML = `Hola, <strong>${userName}</strong>`;
+}
 
-    // Obtener el enlace de "Cerrar sesión"
+    // Obtener "Cerrar sesión"
     const logoutLink = document.getElementById('logout');
 
     // Agregar un event listener para el enlace de "Cerrar sesión"
     logoutLink.addEventListener('click', (event) => {
-        event.preventDefault(); // Evita el comportamiento predeterminado del enlace
+        event.preventDefault(); 
 
         // Eliminar los datos del localStorage
         localStorage.removeItem('userId');
         localStorage.removeItem('userName');
+        localStorage.removeItem('userLevel');
 
-        // Redirigir al usuario a la página de inicio de sesión
-        window.location.href = '/login.html'; // Cambia la ruta a la que desees redirigir al usuario
+        // Redirigir al usuario a la página de login
+        window.location.href = '/login.html'; 
     });
 });
 </script>

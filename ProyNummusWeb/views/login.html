@@ -223,10 +223,10 @@ body{
                         localStorage.setItem('userId', userData.userId);
                         localStorage.setItem('userName', userData.userName);
                         localStorage.setItem('userLevel', userData.userLevel);
-                        console.log('Nombre de usuario almacenado:', userData.userName); // Muestra el nombre de usuario en la consola
-                        console.log('Nivel usuario almacenado:', userData.userLevel); // Muestra el nombre de usuario en la consola
-                        // Redirige al usuario a otra página
-                        window.location.href = '/modules.html'; // Cambia la ruta a la que desees redirigir al usuario
+                        console.log('Nombre de usuario almacenado:', userData.userName); 
+                        console.log('Nivel usuario almacenado:', userData.userLevel); 
+                        // Redirige al usuario a las encuestas iniciales
+                        window.location.href = '/modules.html'; 
                     } else {
                         console.error('La respuesta del servidor no contiene el ID de usuario esperado');
                     }
