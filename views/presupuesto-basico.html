@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <link rel="stylesheet" href="/styles/style2.css">
+        <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+        <style>
+            @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;400&display=swap");
+            * {
+                box-sizing: border-box;
+            }
+            body {
+                background-color: #b8c6db;
+                background-image: linear-gradient(315deg, #b8c6db 0%, #f5f7fa 100%);
+                font-family: "Poppins", sans-serif;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                height: 100vh;
+                overflow: hidden;
+                margin: 0;
+            }
+            .quiz-container {
+                background-color: #fff;
+                border-radius: 10px;
+                box-shadow: 0 0 10px 2px rgba(100, 100, 100, 0.1);
+                width: 800px;
+                max-width: 95vw;
+                overflow: hidden;
+            }
+            .quiz-header {
+                padding: 4rem;
+            }
+            h2 {
+                padding: 1rem;
+                text-align: center;
+                margin: 0;
+            }
+            h3 {
+                padding: 1rem;
+                text-align: center;
+                margin: 0;
+            }
+            ul {
+                list-style-type: none;
+                padding: 0;
+            }
+            ul li {
+                font-size: 1.2rem;
+                margin: 1rem 0;
+            }
+            ul li label {
+                cursor: pointer;
+            }
+            button {
+                background-color: #8e44ad;
+                color: #fff;
+                border: none;
+                display: block;
+                width: 100%;
+                cursor: pointer;
+                font-size: 1.1rem;
+                font-family: inherit;
+                padding: 1.3rem;
+            }
+            button:hover {
+                background-color: #732d91;
+            }
+            button:focus {
+                outline: none;
+                background-color: #5e3370;
+            }
+            .progress-container {
+                height: 20px;
+                width: 100%;
+                background: #f3f3f3;
+                border-radius: 10px;
+                overflow: hidden;
+                margin-bottom: 20px;
+            }
+            .progress-bar {
+                height: 100%;
+                background: #1CBF3B;
+                width: 0;
+                transition: width 0.4s ease;
+            }
+            .back-button {
+                position: absolute;
+                top: 10px;
+                right: 400px; 
+                background-color: #8e44ad;
+                color: #fff;
+                border: none;
+                cursor: pointer;
+                font-size: 1rem;
+                font-family: inherit;
+                padding: 0.5rem 1rem;
+                border-radius: 5px;
+                width: auto;
+            }
+            .back-button:hover {
+                background-color: #732d91;
+            }
+            .back-button:focus {
+                outline: none;
+                background-color: #5e3370;
+            }
+            .correct {
+                background-color: lightgreen;
+            }
+        </style>
+        <title>Presupuesto Básico</title>
+    </head>
+    <body>
+        <button class="back-button" onclick="goBack()">Regresar</button>
+        <div class="quiz-container" id="quiz">
+            <div class="quiz-header">
+                <div class="progress-container">
+                    <div class="progress-bar" id="progress-bar"></div>
+                </div>
+                <h2 id="question">Question is loading...</h2>
+                <ul>
+                    <li>
+                        <input type="radio" name="answer" id="a" class="answer" />
+                        <label for="a" id="a_text">Answer...</label>
+                    </li>
+                    <li>
+                        <input type="radio" name="answer" id="b" class="answer" />
+                        <label for="b" id="b_text">Answer...</label>
+                    </li>
+                    <li>
+                        <input type="radio" name="answer" id="c" class="answer" />
+                        <label for="c" id="c_text">Answer...</label>
+                    </li>
+                    <li>
+                        <input type="radio" name="answer" id="d" class="answer" />
+                        <label for="d" id="d_text">Answer...</label>
+                    </li>
+                </ul>
+            </div>
+            <button id="submit">Enviar</button>
+        </div>
+
+        <script>
+            const quizData = [
+                {
+                    question: "¿Qué es un presupuesto?",
+                    a: "Un plan detallado que asigna ingresos a gastos durante un período de tiempo específico",
+                    b: "Un documento legal para pagar impuestos",
+                    c: "Una cuenta bancaria",
+                    d: "Un préstamo a corto plazo",
+                    correct: "a",
+                },
+                {
+                    question: "¿Cuál es el propósito principal de un presupuesto?",
+                    a: "Gastar más dinero",
+                    b: "Ahorrar y controlar los gastos para alcanzar metas financieras",
+                    c: "Incrementar deudas",
+                    d: "Evitar pagar impuestos",
+                    correct: "b",
+                },
+                {
+                    question: "¿Qué se debe incluir en un presupuesto básico?",
+                    a: "Solo ingresos",
+                    b: "Solo gastos",
+                    c: "Ingresos, gastos y ahorro",
+                    d: "Solo inversiones",
+                    correct: "c",
+                },
+                {
+                    question: "¿Qué significa tener un superávit en un presupuesto?",
+                    a: "Gastar más de lo que se gana",
+                    b: "Ahorrar la cantidad exacta que se gana",
+                    c: "Ingresos que exceden los gastos",
+                    d: "Tener deudas",
+                    correct: "c",
+                },
+                {
+                    question: "¿Qué es un gasto fijo?",
+                    a: "Un gasto que varía cada mes",
+                    b: "Un gasto que se mantiene constante cada mes, como el alquiler o la hipoteca",
+                    c: "Un gasto que nunca se paga",
+                    d: "Un gasto ocasional",
+                    correct: "b",
+                },
+                {
+                    question: "¿Qué es un gasto variable?",
+                    a: "Un gasto que nunca cambia",
+                    b: "Un gasto que cambia cada mes, como la comida o la gasolina",
+                    c: "Un gasto fijo",
+                    d: "Un ingreso adicional",
+                    correct: "b",
+                },
+                {
+                    question: "¿Por qué es importante revisar un presupuesto regularmente?",
+                    a: "Para gastar más dinero",
+                    b: "Para asegurarse de que se está cumpliendo con los objetivos financieros y ajustar según sea necesario",
+                    c: "Para olvidarse de las deudas",
+                    d: "Para incrementar los gastos innecesarios",
+                    correct: "b",
+                },
+                {
+                    question: "¿Qué herramienta básica se puede usar para crear un presupuesto?",
+                    a: "Una calculadora",
+                    b: "Un software de edición de fotos",
+                    c: "Una hoja de cálculo o una aplicación de presupuesto",
+                    d: "Una red social",
+                    correct: "c",
+                },
+            ];
+
+            const quiz = document.getElementById("quiz");
+const answerElements = document.querySelectorAll(".answer");
+const questionElement = document.getElementById("question");
+const a_text = document.getElementById("a_text");
+const b_text = document.getElementById("b_text");
+const c_text = document.getElementById("c_text");
+const d_text = document.getElementById("d_text");
+const submitButton = document.getElementById("submit");
+const progressBar = document.getElementById("progress-bar");
+
+let currentQuiz = 0;
+let score = 0;
+
+const deselectAnswers = () => {
+    answerElements.forEach((answer) => (answer.checked = false));
+    document.querySelectorAll("label").forEach((label) => label.classList.remove("correct"));
+};
+
+const getSelected = () => {
+    let answer;
+    answerElements.forEach((answerElement) => {
+        if (answerElement.checked) answer = answerElement.id;
+    });
+    return answer;
+};
+
+const loadQuiz = () => {
+    deselectAnswers();
+    if (currentQuiz < quizData.length) {
+        const currentQuizData = quizData[currentQuiz];
+        questionElement.innerText = currentQuizData.question;
+        a_text.innerText = currentQuizData.a;
+        b_text.innerText = currentQuizData.b;
+        c_text.innerText = currentQuizData.c;
+        d_text.innerText = currentQuizData.d;
+        updateProgressBar();
+    } else {
+        console.error("Error: currentQuiz está fuera de los límites de quizData.");
+    }
+};
+
+const updateProgressBar = () => {
+    const progress = (currentQuiz / quizData.length) * 100; 
+    progressBar.style.width = `${progress}%`;
+};
+
+loadQuiz();
+
+submitButton.addEventListener("click", () => {
+    const answer = getSelected();
+    if (answer) {
+        const correctAnswer = quizData[currentQuiz]?.correct;
+        if (correctAnswer) {
+            if (answer === correctAnswer) {
+                score++;
+            } else {
+                document.getElementById(`${correctAnswer}_text`).classList.add("correct");
+            }
+        } else {
+            console.error("Error: currentQuiz está fuera de los límites de quizData.");
+            return;
+        }
+        currentQuiz++;
+        if (currentQuiz < quizData.length) {
+            setTimeout(loadQuiz, 1000);
+        } else {
+            console.log(`Puntaje obtenido: ${score}`);
+
+            // Verificar si el puntaje es suficiente para pasar al siguiente nivel
+            if (score >= 6) {
+                const currentUserLevel = getUserLevel();
+                if (currentUserLevel === 'basico') {
+                    setUserLevel('conocedor');
+                    // Actualizar el nivel en la base de datos
+                    actualizarNivelEnBaseDeDatos('conocedor');
+                    quiz.innerHTML = `
+                        <h2>Felicitaciones!, pasaste el nivel básico</h2>
+                        <button onclick="window.location.href='/modulos.html'">Regresar a los niveles</button>
+                    `;
+                } else {
+                    quiz.innerHTML = `
+                        <h2>Felicitaciones!, pasaste el examen</h2>
+                        <button onclick="window.location.href='/modulos.html'">Regresar a los niveles</button>
+                    `;
+                }
+            } else {
+                quiz.innerHTML = `
+                    <h2>Fallaste el examen básico, vuelve a intentarlo</h2>
+                     <button onclick="window.location.reload()">Retomar la encuesta</button>
+                `;
+            }
+        }
+    }
+});
+
+// Función para actualizar el nivel en la base de datos
+function actualizarNivelEnBaseDeDatos(nuevoNivel) {
+    const userId = localStorage.getItem('userId'); 
+    const data = { userId: userId, nuevoNivel: nuevoNivel };
+
+    fetch('/actualizar-nivel', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Error al actualizar el nivel del usuario');
+        }
+        console.log('Nivel de usuario actualizado en la base de datos');
+        
+    })
+    .catch(error => console.error('Error al actualizar nivel en la base de datos:', error));
+}
+
+// Función para regresar atrás 
+function goBack() {
+    window.history.back();
+}
+
+// Función para obtener el nivel del usuario
+function getUserLevel() {
+    return localStorage.getItem('userLevel') || 'basico';
+}
+
+// Función para establecer el nivel del usuario
+function setUserLevel(level) {
+    localStorage.setItem('userLevel', level);
+}
+    </script>
+    </body>
+</html>
