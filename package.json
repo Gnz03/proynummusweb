@@ -1,4 +1,5 @@
 {
+<<<<<<< HEAD
   "name": "proynummusweb",
   "version": "1.0.0",
   "description": "",
@@ -10,11 +11,28 @@
   "keywords": [],
   "author": "NickChavez",
   "license": "ISC",
+=======
+>>>>>>> 494ac76f61d9310a2f306e7b2f9ac7f5aa5e8a2f
   "dependencies": {
     "body-parser": "^1.20.2",
     "ejs": "^3.1.10",
     "express": "^4.19.2",
+<<<<<<< HEAD
     "mssql": "^10.0.2",
     "nodemon": "^3.1.1"
   }
+=======
+    "mssql": "^10.0.2"
+  },
+  "name": "proynummusweb",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": ""
+>>>>>>> 494ac76f61d9310a2f306e7b2f9ac7f5aa5e8a2f
 }

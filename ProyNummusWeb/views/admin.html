@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Administrador</title>
+    <style>
+        @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;400&display=swap");
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+        }
+
+        h1 {
+            margin: 0;
+        }
+
+        .admin-panel {
+            display: flex;
+            justify-content: space-between;
+            padding: 20px;
+        }
+
+        .question-list, .question-form {
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+            padding: 20px;
+            width: 45%;
+        }
+
+        .question-list {
+            margin-right: 20px;
+        }
+
+        #question-form label {
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        #question-form input[type="text"],
+        #question-form select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        #question-form button {
+            background-color: #333;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #question-form button:hover {
+            background-color: #555;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Panel de Administrador</h1>
+    </header>
+    <div class="admin-panel">
+        <div class="question-list">
+            <!-- Aquí se mostrarán las preguntas existentes -->
+            <h2>Preguntas existentes:</h2>
+            <select id="question-dropdown">
+                <!-- Las opciones se cargarán aquí dinámicamente desde JavaScript -->
+                <option value="1">Pregunta 1</option>
+                <option value="2">Pregunta 2</option>
+            </select>
+        </div>
+        <div class="question-form">
+            <!-- Formulario para agregar o editar preguntas -->
+            <h2>Agregar/Editar Pregunta:</h2>
+            <form id="question-form">
+                <input type="hidden" id="question-id" value="">
+                <label for="question-text">Pregunta:</label>
+                <input type="text" id="question-text" required>
+                <label for="answer-a">Respuesta A:</label>
+                <input type="text" id="answer-a" required>
+                <label for="answer-b">Respuesta B:</label>
+                <input type="text" id="answer-b" required>
+                <label for="answer-c">Respuesta C:</label>
+                <input type="text" id="answer-c" required>
+                <label for="answer-d">Respuesta D:</label>
+                <input type="text" id="answer-d" required>
+                <label for="correct-answer">Respuesta Correcta:</label>
+                <select id="correct-answer" required>
+                    <option value="a">A</option>
+                    <option value="b">B</option>
+                    <option value="c">C</option>
+                    <option value="d">D</option>
+                </select>
+                <button type="submit">Guardar Pregunta</button>
+            </form>
+        </div>
+    </div>
+    <script >
+document.addEventListener('DOMContentLoaded', function() {
+    const questionForm = document.getElementById('question-form');
+    const questionDropdown = document.getElementById('question-dropdown'); // Cambiado a question-dropdown
+
+ 
+
+    async function cargarPreguntas() {
+    try {
+        const response = await fetch('/api/preguntas');
+        const preguntas = await response.json();
+
+        console.log('Preguntas obtenidas:', preguntas); // Verificar las preguntas obtenidas del servidor
+        console.log(questionDropdown); // Agregar esta línea para verificar si questionDropdown es nulo o no
+
+          // Limpiar opciones de preguntas
+          questionDropdown.innerHTML = '';
+   // Agregar opciones al menú desplegable de preguntas
+   preguntas.forEach(pregunta => {
+                const option = document.createElement('option');
+                option.textContent = pregunta.Pregunta;
+                option.value = pregunta.Id; // Asignar el ID de la pregunta como valor
+                questionDropdown.appendChild(option);
+            });
+        } catch (error) {
+            console.error('Error al cargar las preguntas:', error);
+        }
+    }
+    async function cargarRespuestas(idPregunta) {
+        try {
+            const response = await fetch(`/api/preguntas/${idPregunta}`);
+            const pregunta = await response.json();
+
+            console.log('Respuestas de la pregunta:', pregunta); // Verifica las respuestas obtenidas del servidor
+
+            // Rellenar campos del formulario con las respuestas de la pregunta
+            document.getElementById('question-id').value = pregunta.Id; // Establecer el ID de la pregunta
+            document.getElementById('question-text').value = pregunta.Pregunta;
+            document.getElementById('answer-a').value = pregunta.RespuestaA;
+            document.getElementById('answer-b').value = pregunta.RespuestaB;
+            document.getElementById('answer-c').value = pregunta.RespuestaC;
+            document.getElementById('answer-d').value = pregunta.RespuestaD;
+            document.getElementById('correct-answer').value = pregunta.RespuestaCorrecta;
+        } catch (error) {
+            console.error('Error al cargar las respuestas de la pregunta:', error);
+        }
+    }
+
+    questionDropdown.addEventListener('change', function() {
+        const selectedQuestionId = this.value; // Obtener el ID de la pregunta seleccionada
+        console.log('ID de la pregunta seleccionada:', selectedQuestionId); // Verificar el ID de la pregunta seleccionada
+        if (selectedQuestionId) {
+            cargarRespuestas(selectedQuestionId);
+        }
+    });
+
+    questionForm.addEventListener('submit', async function(event) {
+        event.preventDefault();
+
+        const formData = new FormData(questionForm);
+        const id = formData.get('question-id');
+        const pregunta = {
+            Pregunta: formData.get('question-text'),
+            RespuestaA: formData.get('answer-a'),
+            RespuestaB: formData.get('answer-b'),
+            RespuestaC: formData.get('answer-c'),
+            RespuestaD: formData.get('answer-d'),
+            RespuestaCorrecta: formData.get('correct-answer')
+        };
+
+        console.log('Pregunta a guardar:', pregunta); // Verifica la pregunta que se enviará al servidor
+
+        try {
+            const response = await fetch(`/api/preguntas/${id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(pregunta)
+            });
+
+            if (response.ok) {
+                questionForm.reset();
+                cargarPreguntas();
+            } else {
+                console.error('Error al guardar la pregunta:', response.statusText);
+            }
+        } catch (error) {
+            console.error('Error al guardar la pregunta:', error);
+        }
+    });
+
+    cargarPreguntas();
+});
+
+
+    </script>
+</body>
+</html>
