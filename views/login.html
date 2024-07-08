@@ -18,9 +18,17 @@ body{
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background: #17191D;
-}
+    background: #4a52ea;
+    color:white;
+}      
+                p {
+            color: white !important; 
+        }
 
+       
+        p strong {
+            color: white !important; 
+        }
 .wrapper{
     width: 420px;
     color: #ffff;
@@ -32,9 +40,8 @@ body{
     top: 100px;
     right: 400px;
     padding: 15px; 
-    background: #17191D;
     color: white;
-    border: 2px solid #394150; 
+    
     border-style: double;
     border-radius: 15px;
     box-shadow: 0px 4px 0px rgba(90, 88, 88, 0.925);
@@ -73,7 +80,6 @@ body{
     height: 50px;
     border-radius: 15px;
     font-size: 18px;
-    color: gray;
     font-weight: bold;
 }
 
@@ -111,11 +117,10 @@ body{
     top: 100px;
     right: 400px;
     padding: 15px; 
+    margin-top:10px;
     padding-left: 30px;
-    padding-right: 30px;
-    background: #17191D;
-    color: white;
-    border: 2px solid #394150; 
+    padding-right: 30px; 
+    color: white;   
     border-style: double;
     border-radius: 15px;
     box-shadow: 0px 4px 0px rgba(90, 88, 88, 0.925); 
@@ -160,6 +165,7 @@ body{
    
 }
 
+
 .btn-ingresar:hover,
 .btn-otro:hover {
     background-color: #0056b3;
@@ -178,7 +184,7 @@ body{
 </head>
 <body>
     <div class="wrapper">
-        <img src="nummus.png" alt="" width="100" height="100">
+        <img src="nummus.png" alt="" width="150" height="150"style="margin-bottom: 20px;">
         <form id="loginForm" action="/login" method="POST">
             <h1>Ingresar</h1>
             <div class="input-box">
@@ -196,16 +202,13 @@ body{
             <strong>términos del servicio de Google</strong></p>
         </form>
     </div>
-    
-
     <script>
-        const loginForm = document.getElementById('loginForm');
-        loginForm.addEventListener('submit', async (event) => {
-            event.preventDefault();
+        document.getElementById('loginForm').addEventListener('submit', async function(e) {
+            e.preventDefault(); // Evita el envío del formulario por defecto
             
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
-        
+
             try {
                 const response = await fetch('/login', {
                     method: 'POST',
@@ -214,30 +217,35 @@ body{
                     },
                     body: JSON.stringify({ email, password })
                 });
-        
+
                 if (response.ok) {
                     const userData = await response.json();
-                    if (userData) {
-                        console.log('userData:', userData); // Muestra el ID de usuario y el nombre en la consola
+                    console.log('userData:', userData); // Muestra el ID de usuario y el nombre en la consola
                         // Almacena el userId y el nombre del usuario en el localStorage
                         localStorage.setItem('userId', userData.userId);
                         localStorage.setItem('userName', userData.userName);
                         localStorage.setItem('userLevel', userData.userLevel);
+                        console.log('ID de usuario almacenado:', userData.userId)
                         console.log('Nombre de usuario almacenado:', userData.userName); 
-                        console.log('Nivel usuario almacenado:', userData.userLevel); 
-                        // Redirige al usuario a las encuestas iniciales
-                        window.location.href = '/modules.html'; 
+                        console.log('Nivel usuario almacenado:', userData.userLevel);
+
+                    if (!userData.userLevel) {
+                        // Si el nivel es null o no existe, redirigir a seleccionar-nivel.html
+                        window.location.href = 'seleccionar-nivel.html';
                     } else {
-                        console.error('La respuesta del servidor no contiene el ID de usuario esperado');
+                        // Si el nivel está asignado, redirigir a modulos.html
+                        window.location.href = 'modulos.html';
                     }
                 } else {
-                    alert('Correo electrónico o contraseña incorrectos');
+                    alert('Correo o contraseña incorrectos');
                 }
             } catch (error) {
-                console.error('Error al procesar la solicitud:', error);
+                console.error('Error de autenticación:', error);
+                alert('Error al intentar iniciar sesión');
             }
         });
-        </script>
+    </script> 
+
         
 </body>
 </html>

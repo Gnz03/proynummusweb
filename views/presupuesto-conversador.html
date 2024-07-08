@@ -2,113 +2,9 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="/styles/style2.css">
+    <link rel="stylesheet" type="text/css" href="../../styles/style3.css">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-    <style>
-        @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;400&display=swap");
-        * {
-            box-sizing: border-box;
-        }
-        body {
-            background-color: #b8c6db;
-            background-image: linear-gradient(315deg, #b8c6db 0%, #f5f7fa 100%);
-            font-family: "Poppins", sans-serif;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            overflow: hidden;
-            margin: 0;
-        }
-        .quiz-container {
-            background-color: #fff;
-            border-radius: 10px;
-            box-shadow: 0 0 10px 2px rgba(100, 100, 100, 0.1);
-            width: 800px;
-            max-width: 95vw;
-            overflow: hidden;
-        }
-        .quiz-header {
-            padding: 4rem;
-        }
-        h2 {
-            padding: 1rem;
-            text-align: center;
-            margin: 0;
-        }
-        h3 {
-            padding: 1rem;
-            text-align: center;
-            margin: 0;
-        }
-        ul {
-            list-style-type: none;
-            padding: 0;
-        }
-        ul li {
-            font-size: 1.2rem;
-            margin: 1rem 0;
-        }
-        ul li label {
-            cursor: pointer;
-        }
-        button {
-            background-color: #8e44ad;
-            color: #fff;
-            border: none;
-            display: block;
-            width: 100%;
-            cursor: pointer;
-            font-size: 1.1rem;
-            font-family: inherit;
-            padding: 1.3rem;
-        }
-        button:hover {
-            background-color: #732d91;
-        }
-        button:focus {
-            outline: none;
-            background-color: #5e3370;
-        }
-        .progress-container {
-            height: 20px;
-            width: 100%;
-            background: #f3f3f3;
-            border-radius: 10px;
-            overflow: hidden;
-            margin-bottom: 20px;
-        }
-        .progress-bar {
-            height: 100%;
-            background: #1CBF3B;
-            width: 0;
-            transition: width 0.4s ease;
-        }
-        .back-button {
-            position: absolute;
-            top: 10px;
-            right: 400px; /* Ajusta esto según tu diseño */
-            background-color: #8e44ad;
-            color: #fff;
-            border: none;
-            cursor: pointer;
-            font-size: 1rem;
-            font-family: inherit;
-            padding: 0.5rem 1rem;
-            border-radius: 5px;
-            width: auto;
-        }
-        .back-button:hover {
-            background-color: #732d91;
-        }
-        .back-button:focus {
-            outline: none;
-            background-color: #5e3370;
-        }
-        .correct {
-            background-color: lightgreen;
-        }
-    </style>
+    
     <title>Presupuesto Conversador</title>
 </head>
 <body>
@@ -137,6 +33,13 @@
                     <label for="d" id="d_text">Respuesta...</label>
                 </li>
             </ul>
+            <div id="popup" class="popup">
+                <div class="popup-content">
+                    <span class="close-btn" onclick="closePopup()">&times;</span>
+                    <div id="popup-message">Mensaje del popup</div>
+                    
+                </div>
+            </div>
         </div>
         <button id="submit">Enviar</button>
     </div>
@@ -150,6 +53,7 @@
                 c: "Un presupuesto sin ingresos",
                 d: "Un presupuesto sin gastos",
                 correct: "b",
+                explanation: "El presupuesto ajustado por inflación toma en cuenta los cambios en el poder adquisitivo del dinero y ajusta los costos futuros para reflejar el impacto de la inflación.",
             },
             {
                 question: "¿Qué es el análisis de escenarios en la elaboración de presupuestos?",
@@ -158,6 +62,7 @@
                 c: "Un análisis sin gastos",
                 d: "Un análisis sin ingresos",
                 correct: "b",
+                explanation: "El análisis de escenarios considera diferentes posibles futuros y evalúa cómo estos impactarían el presupuesto, permitiendo una planificación más robusta y adaptable",
             },
             {
                 question: "¿Qué significa 'presupuesto rígido'?",
@@ -166,6 +71,7 @@
                 c: "Un presupuesto sin ingresos",
                 d: "Un presupuesto sin gastos",
                 correct: "b",
+                explanation: "Un presupuesto rígido es aquel que no permite ajustes, independientemente de los cambios en los ingresos o gastos, lo que puede limitar la capacidad de adaptarse a nuevas circunstancias",
             },
             {
                 question: "¿Qué es el 'presupuesto por resultados'?",
@@ -174,6 +80,7 @@
                 c: "Un presupuesto sin ingresos",
                 d: "Un presupuesto sin gastos",
                 correct: "b",
+                explanation: "El presupuesto por resultados asigna fondos según el rendimiento esperado y los resultados de diferentes áreas o proyectos, incentivando la eficiencia y efectividad",
             },
             {
                 question: "¿Qué es el 'presupuesto incremental'?",
@@ -182,6 +89,7 @@
                 c: "Un presupuesto sin ingresos",
                 d: "Un presupuesto sin gastos",
                 correct: "b",
+                explanation: " El presupuesto incremental toma el presupuesto anterior y añade incrementos para reflejar cambios en los costos o nuevas prioridades, simplificando la planificación y ajustándose a las necesidades actuales",
             },
             {
                 question: "¿Qué es el 'presupuesto de desempeño'?",
@@ -190,6 +98,7 @@
                 c: "Un presupuesto sin ingresos",
                 d: "Un presupuesto sin gastos",
                 correct: "b",
+                explanation: "El presupuesto de desempeño se enfoca en medir y mejorar la eficiencia y efectividad con la que se utilizan los fondos asignados, asegurando que los recursos se empleen de manera óptima para alcanzar los objetivos organizacionales",
             },
             {
                 question: "¿Qué es la 'planificación presupuestaria estratégica'?",
@@ -198,6 +107,7 @@
                 c: "Una planificación sin ingresos",
                 d: "Una planificación sin gastos",
                 correct: "b",
+                explanation: "La planificación presupuestaria estratégica alinea el presupuesto con los objetivos estratégicos a largo plazo de la organización, asegurando que los recursos financieros se utilicen de manera coherente con la visión y metas de la organización",
             },
             {
                 question: "¿Cómo puede el análisis de datos mejorar la precisión del presupuesto?",
@@ -206,6 +116,7 @@
                 c: "Aumentando los gastos sin control",
                 d: "Reduciendo todos los ingresos",
                 correct: "b",
+                explanation: "El análisis de datos mejora la precisión del presupuesto al utilizar datos históricos y tendencias actuales para hacer estimaciones más precisas de ingresos y gastos futuros, permitiendo una planificación más informada y efectiva.",
             }
         ];
 
@@ -218,9 +129,12 @@
     const d_text = document.getElementById("d_text");
     const submitButton = document.getElementById("submit");
     const progressBar = document.getElementById("progress-bar");
+    const popup = document.getElementById("popup");
+        const popupMessage = document.getElementById("popup-message");
 
     let currentQuiz = 0;
     let score = 0;
+    let currentQuizData;
 
     const deselectAnswers = () => {
         answerElements.forEach((answer) => (answer.checked = false));
@@ -238,7 +152,7 @@
     const loadQuiz = () => {
         deselectAnswers();
         if (currentQuiz < quizData.length) {
-            const currentQuizData = quizData[currentQuiz];
+            currentQuizData = quizData[currentQuiz];
             questionElement.innerText = currentQuizData.question;
             a_text.innerText = currentQuizData.a;
             b_text.innerText = currentQuizData.b;
@@ -265,7 +179,10 @@
                 if (answer === correctAnswer) {
                     score++;
                 } else {
+                    popupMessage.innerHTML = `Respuesta incorrecta. La respuesta correcta es: ${currentQuizData[correctAnswer]}.<br>Explicación: ${currentQuizData.explanation || "Sin explicación"}`;
+                    showPopup();
                     document.getElementById(`${correctAnswer}_text`).classList.add("correct");
+                    lastQuestionAnswered = currentQuiz + 1 === quizData.length; // Check if it's the last question
                 }
             } else {
                 console.error("Error: currentQuiz está fuera de los límites de quizData.");
@@ -278,7 +195,7 @@
                 console.log(`Puntaje obtenido: ${score}`);
 
                 // Verificar si el puntaje es suficiente para pasar al siguiente nivel
-                if (score >= 6) {
+                if (score === 8) {
                     const currentUserLevel = getUserLevel();
                     if (currentUserLevel === 'conversador') {
                         setUserLevel('experto');
@@ -303,6 +220,18 @@
             }
         }
     });
+
+    const showPopup = () => {
+    popup.style.display = "block";
+};
+
+const closePopup = () => {
+    popup.style.display = "none";
+    if (lastQuestionAnswered) {
+        displayResult();
+    }
+};
+
 
     // Función para actualizar el nivel en la base de datos
     function actualizarNivelEnBaseDeDatos(nuevoNivel) {

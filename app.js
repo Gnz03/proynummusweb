@@ -3,10 +3,16 @@ const app = express();
 const mssql = require('mssql');
 const path = require('path');
 
-
+// Configurar motor de plantillas EJS
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
 // Configurar Express para servir archivos estáticos desde la carpeta 'views'
 app.use(express.static('views'));
 
+// Configurar Express para servir archivos estáticos desde la carpeta 'styles' para CSS
+app.use('/styles', express.static(path.join(__dirname, 'styles')));
+// Middleware para analizar datos de formulario en el cuerpo de las solicitudes
+app.use(express.urlencoded({ extended: true }));
 // Configuración de la conexión a la base de datos
 const config = {
     server: 'DESKTOP-OHQ3QLN\\SQLEXPRESS',
@@ -25,36 +31,77 @@ const connection = new mssql.ConnectionPool(config);
 app.use(express.json()); // Usar express.json() para analizar los datos JSON
 
 
-/// Ruta para actualizar el nivel de usuario
+// Ruta para actualizar el nivel de usuario
 app.post('/actualizar-nivel', async (req, res) => {
     const { userId, nuevoNivel } = req.body;
-
-
     try {
-        // Conectar con la base de datos
+        const result = await actualizarNivelUsuario(userId, nuevoNivel);
+        res.json({ success: result });
+    } catch (error) {
+        console.error('Error al actualizar el nivel de usuario:', error);
+        res.status(500).send('Error interno del servidor');
+    }
+});
+// Ruta para seleccionar el nivel del usuario
+app.get('/seleccionar-nivel', (req, res) => {
+    const userId = obtenerUserId(); 
+    res.sendFile(path.join(__dirname, 'views', 'seleccionar-nivel.html'));
+});
+// Ruta para budget.html
+app.get('/budget', (req, res) => {
+    res.sendFile(path.join(__dirname, 'views', 'budget.html'));
+});
+
+// Ruta para modulo-presupuesto.html
+app.get('/modulo-presupuesto', (req, res) => {
+    res.sendFile(path.join(__dirname, 'views', 'modulo-presupuesto.html'));
+});
+
+// Función para actualizar el nivel de usuario en la base de datos
+async function actualizarNivelUsuario(userId, nuevoNivel) {
+    try {
+       
         const pool = await mssql.connect(config);
 
-        // Ejecutar la consulta SQL para actualizar el nivel de usuario
         const request = pool.request();
         request.input('userId', mssql.Int, userId);
         request.input('nuevoNivel', mssql.VarChar(20), nuevoNivel);
         const query = `UPDATE TB_USUARIO SET Nivel = @nuevoNivel WHERE IdUsuario = @userId`;
         const result = await request.query(query);
 
-        // Imprimir el resultado de la consulta para depuración
         console.log('Resultado de la consulta:', result);
-
-        if (result.rowsAffected[0] > 0) {
-            res.send('Nivel de usuario actualizado correctamente');
-        } else {
-            res.status(404).send('Usuario no encontrado');
-        }
+   
+        return result.rowsAffected[0] > 0;
     } catch (error) {
         console.error('Error al actualizar el nivel de usuario en la base de datos:', error);
+        throw error;
+    }
+}
+
+// Ruta para establecer el nivel del usuario
+app.post('/establecer-nivel', async (req, res) => {
+    console.log(req.body); // Agrega este console.log para depurar
+    const { userId, option } = req.body;
+
+    try {
+        if (option === 'basico') {
+            const nuevoNivel = 'basico';
+            const result = await actualizarNivelUsuario(userId, nuevoNivel);
+            if (result) {
+                res.redirect('/modulo-presupuesto.html');
+            } else {
+                res.status(500).send('Error al actualizar el nivel de usuario');
+            }
+        } else if (option === 'prueba') {
+            res.redirect('/budget.html');
+        } else {
+            res.status(400).send('Opción no válida');
+        }
+    } catch (error) {
+        console.error('Error al establecer el nivel de usuario:', error);
         res.status(500).send('Error interno del servidor');
     }
 });
-
 // Definir la ruta para el inicio de sesión
 app.post('/login', async (req, res) => {
     try {
@@ -119,103 +166,4 @@ app.listen(port, () => {
 
 //Pruebas
 
-// Establecer el endpoint API para obtener las preguntas
-app.get('/api/preguntas', async (req, res) => {
-    try {
-        // Conectar con la base de datos
-        await pool.connect();
 
-        // Ejecutar la consulta para obtener las preguntas
-        const request = pool.request();
-        const result = await request.query('SELECT * FROM tb_preguntas');
-
-        // Enviar las preguntas como respuesta en formato JSON
-        res.json(result.recordset);
-    } catch (error) {
-        console.error('Error al consultar las preguntas:', error);
-        res.status(500).json({ error: 'Error al consultar las preguntas' });
-    }
-});
-
-
-// Endpoint para actualizar una pregunta por su ID
-app.put('/api/preguntas/:id', async (req, res) => {
-    const idPregunta = req.params.id;
-    const preguntaActualizada = req.body;
-
-    try {
-        // Conectar con la base de datos
-        const pool = await mssql.connect(config);
-
-        // Llamar al procedimiento almacenado EditarPregunta
-        const request = pool.request();
-        request.input('IdPregunta', mssql.Int, idPregunta);
-        request.input('Pregunta', mssql.NVarChar(255), preguntaActualizada.Pregunta);
-        request.input('RespuestaA', mssql.NVarChar(255), preguntaActualizada.RespuestaA);
-        request.input('RespuestaB', mssql.NVarChar(255), preguntaActualizada.RespuestaB);
-        request.input('RespuestaC', mssql.NVarChar(255), preguntaActualizada.RespuestaC);
-        request.input('RespuestaD', mssql.NVarChar(255), preguntaActualizada.RespuestaD);
-        request.input('RespuestaCorrecta', mssql.NVarChar(1), preguntaActualizada.RespuestaCorrecta);
-
-        const result = await request.execute('EditarPregunta');
-
-        // Cerrar la conexión con la base de datos
-        pool.close();
-
-        res.status(200).json({ message: 'Pregunta actualizada exitosamente' });
-    } catch (error) {
-        console.error('Error al actualizar la pregunta:', error);
-        res.status(500).json({ error: 'Error interno del servidor al actualizar la pregunta' });
-    }
-});
-
-app.post('/questions', async (req, res) => {
-    const { text, answers, correct } = req.body;
-    try {
-        const pool = await mssql.connect(config);
-        const result = await pool.request()
-            .input('text', mssql.VarChar, text)
-            .input('a', mssql.VarChar, answers.a)
-            .input('b', mssql.VarChar, answers.b)
-            .input('c', mssql.VarChar, answers.c)
-            .input('d', mssql.VarChar, answers.d)
-            .input('correct', mssql.VarChar, correct)
-            .query(`INSERT INTO TB_PREGUNTAS (Pregunta, RespuestaA, RespuestaB, RespuestaC, RespuestaD, RespuestaCorrecta) 
-                    VALUES (@text, @a, @b, @c, @d, @correct);
-                    SELECT SCOPE_IDENTITY() AS IdPregunta`);
-        const newQuestion = {
-            id: result.recordset[0].IdPregunta,
-            text,
-            answers,
-            correct
-        };
-        res.json(newQuestion);
-    } catch (error) {
-        console.error('Error al agregar pregunta:', error);
-        res.status(500).send('Error interno del servidor');
-    }
-});
-
-app.put('/questions/:id', async (req, res) => {
-    const { id } = req.params;
-    const { text, answers, correct } = req.body;
-    try {
-        const pool = await mssql.connect(config);
-        await pool.request()
-            .input('id', mssql.Int, id)
-            .input('text', mssql.VarChar, text)
-            .input('a', mssql.VarChar, answers.a)
-            .input('b', mssql.VarChar, answers.b)
-            .input('c', mssql.VarChar, answers.c)
-            .input('d', mssql.VarChar, answers.d)
-            .input('correct', mssql.VarChar, correct)
-            .query(`UPDATE TB_PREGUNTAS 
-                    SET Pregunta = @text, RespuestaA = @a, RespuestaB = @b, RespuestaC = @c, RespuestaD = @d, RespuestaCorrecta = @correct 
-                    WHERE IdPregunta = @id`);
-        const updatedQuestion = { id, text, answers, correct };
-        res.json(updatedQuestion);
-    } catch (error) {
-        console.error('Error al actualizar pregunta:', error);
-        res.status(500).send('Error interno del servidor');
-    }
-});

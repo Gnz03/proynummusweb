@@ -3,130 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <style>
-        @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;400&display=swap");
-    
-        * {
-            box-sizing: border-box;
-        }
-    
-        body {
-            background-color: #b8c6db;
-            background-image: linear-gradient(315deg, #b8c6db 0%, #f5f7fa 100%);
-            font-family: "Poppins", sans-serif;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            overflow: hidden;
-            margin: 0;
-        }
-    
-        .quiz-container {
-            background-color: #fff;
-            border-radius: 10px;
-            box-shadow: 0 0 10px 2px rgba(100, 100, 100, 0.1);
-            width: 800px;
-            max-width: 95vw;
-            overflow: hidden;
-        }
-    
-        .quiz-header {
-            padding: 4rem;
-        }
-    
-        h2 {
-            padding: 1rem;
-            text-align: center;
-            margin: 0;
-        }
-    
-        h3 {
-            padding: 1rem;
-            text-align: center;
-            margin: 0;
-        }
-    
-        ul {
-            list-style-type: none;
-            padding: 0;
-        }
-    
-        ul li {
-            font-size: 1.2rem;
-            margin: 1rem 0;
-        }
-    
-        ul li label {
-            cursor: pointer;
-        }
-    
-        button {
-            background-color: #8e44ad;
-            color: #fff;
-            border: none;
-            display: block;
-            width: 100%;
-            cursor: pointer;
-            font-size: 1.1rem;
-            font-family: inherit;
-            padding: 1.3rem;
-        }
-    
-        button:hover {
-            background-color: #732d91;
-        }
-    
-        button:focus {
-            outline: none;
-            background-color: #5e3370;
-        }
-    
-        .progress-container {
-            height: 20px;
-            width: 100%;
-            background: #f3f3f3;
-            border-radius: 10px;
-            overflow: hidden;
-            margin-bottom: 20px;
-        }
-    
-        .progress-bar {
-            height: 100%;
-            background: #1CBF3B;
-            width: 0;
-            transition: width 0.4s ease;
-        }
-    
-        .back-button {
-            position: absolute;
-            top: 10px;
-            right: 400px; /* Ajusta según sea necesario */
-            background-color: #8e44ad;
-            color: #fff;
-            border: none;
-            cursor: pointer;
-            font-size: 1rem;
-            font-family: inherit;
-            padding: 0.5rem 1rem;
-            border-radius: 5px;
-            width: auto;
-        }
-    
-        .back-button:hover {
-            background-color: #732d91;
-        }
-    
-        .back-button:focus {
-            outline: none;
-            background-color: #5e3370;
-        }
-    
-        .correct {
-            background-color: lightgreen;
-        }
-    </style>
+    <link rel="stylesheet" type="text/css" href="../../styles/style3.css">
+   
     <title>Quiz Presupuesto Experto </title>
 </head>
 <body>
@@ -155,6 +33,13 @@
                     <label for="d" id="d_text">Answer...</label>
                 </li>
             </ul>
+            <div id="popup" class="popup">
+                <div class="popup-content">
+                    <span class="close-btn" onclick="closePopup()">&times;</span>
+                    <div id="popup-message">Mensaje del popup</div>
+                    
+                </div>
+            </div>
         </div>
         <button id="submit">Enviar</button>
     </div>
@@ -167,7 +52,9 @@
         b: "Un enfoque presupuestario que requiere que cada actividad se justifique desde cero",
         c: "Un tipo de bono",
         d: "Un gasto fijo",
-        correct: "b"
+        correct: "b",
+        explanation: "La presupuestación de base cero requiere que cada actividad se justifique desde cero en cada nuevo período presupuestario. Este enfoque no toma el presupuesto del año anterior como base, sino que evalúa y justifica cada gasto desde el principio, promoviendo una asignación eficiente de recursos.",
+        
     },
     {
         question: "¿Qué es el presupuesto flexible?",
@@ -175,7 +62,8 @@
         b: "Un presupuesto que puede ajustarse según cambien las condiciones o niveles de actividad",
         c: "Un tipo de acción",
         d: "Un ahorro",
-        correct: "b"
+        correct: "b",
+        explanation: "Un presupuesto flexible puede ajustarse según cambien las condiciones o niveles de actividad, permitiendo a la organización reaccionar de manera más eficaz a las variaciones en su entorno operativo.",
     },
     {
         question: "¿Qué es el presupuesto de efectivo?",
@@ -183,7 +71,8 @@
         b: "Un tipo de bono",
         c: "Un tipo de gasto fijo",
         d: "Un ahorro",
-        correct: "a"
+        correct: "a",
+        explanation: "Un presupuesto de efectivo es un plan que detalla los ingresos y egresos de efectivo esperados durante un período específico. Ayuda a la organización a gestionar su liquidez y asegurar que tiene suficiente efectivo para cubrir sus obligaciones.",
     },
     {
         question: "¿Qué es la variación presupuestaria?",
@@ -191,7 +80,8 @@
         b: "Un tipo de bono",
         c: "Un tipo de gasto fijo",
         d: "Un ahorro",
-        correct: "a"
+        correct: "a",
+        explanation: "La variación presupuestaria es la diferencia entre los ingresos y gastos reales y los presupuestados. Esta métrica es importante para entender cómo se está desempeñando la organización en comparación con sus planes y permite hacer ajustes necesarios.",
     },
     {
         question: "¿Qué es la presupuestación participativa?",
@@ -199,7 +89,8 @@
         b: "Un tipo de ahorro",
         c: "Un tipo de bono",
         d: "Un gasto fijo",
-        correct: "a"
+        correct: "a",
+        explanation: " La presupuestación participativa es un enfoque que involucra a empleados y otros stakeholders en el proceso de elaboración del presupuesto. Este método puede mejorar la precisión del presupuesto y aumentar la aceptación y el compromiso con los objetivos financieros de la organización.",
     },
     {
         question: "¿Qué es un presupuesto de capital?",
@@ -207,7 +98,8 @@
         b: "Un presupuesto personal",
         c: "Un tipo de ahorro",
         d: "Un tipo de acción",
-        correct: "a"
+        correct: "a",
+        explanation: "Un presupuesto de capital es una herramienta financiera que ayuda a las empresas a planificar y controlar sus inversiones a largo plazo. Este tipo de presupuesto se utiliza para evaluar y seleccionar proyectos de inversión que requerirán un desembolso significativo de recursos financieros.",
     },
     {
         question: "¿Qué es el presupuesto maestro?",
@@ -215,7 +107,8 @@
         b: "Un presupuesto sencillo",
         c: "Un tipo de bono",
         d: "Un gasto fijo",
-        correct: "a"
+        correct: "a",
+        explanation: "El presupuesto maestro es un plan financiero integral que cubre todos los aspectos de las operaciones de una empresa para un período específico. Incluye diversos presupuestos detallados como el presupuesto de ventas, producción, y financiero.",
     },
     {
         question: "¿Qué es la presupuestación por programas?",
@@ -223,7 +116,8 @@
         b: "Un tipo de acción",
         c: "Un tipo de ahorro",
         d: "Un tipo de bono",
-        correct: "a"
+        correct: "a",
+        explanation: " La presupuestación por programas es un enfoque presupuestario que vincula los recursos con los objetivos y resultados de programas específicos. Este método permite a las organizaciones enfocar sus recursos en áreas que generen los resultados más importantes y alineados con sus objetivos estratégicos.",
     }
 ];
 
@@ -237,9 +131,12 @@
     const d_text = document.getElementById("d_text");
     const submitButton = document.getElementById("submit");
     const progressBar = document.getElementById("progress-bar");
+    const popup = document.getElementById("popup");
+    const popupMessage = document.getElementById("popup-message");
 
     let currentQuiz = 0;
     let score = 0;
+    let currentQuizData;
 
     const deselectAnswers = () => {
         answerElements.forEach((answer) => (answer.checked = false));
@@ -257,7 +154,7 @@
     const loadQuiz = () => {
         deselectAnswers();
         if (currentQuiz < quizData.length) {
-            const currentQuizData = quizData[currentQuiz];
+            currentQuizData = quizData[currentQuiz];
             questionElement.innerText = currentQuizData.question;
             a_text.innerText = currentQuizData.a;
             b_text.innerText = currentQuizData.b;
@@ -284,7 +181,10 @@
             if (answer === correctAnswer) {
                 score++;
             } else {
+                popupMessage.innerHTML = `Respuesta incorrecta. La respuesta correcta es: ${currentQuizData[correctAnswer]}.<br>Explicación: ${currentQuizData.explanation || "Sin explicación"}`;
+                    showPopup();
                 document.getElementById(`${correctAnswer}_text`).classList.add("correct");
+                lastQuestionAnswered = currentQuiz + 1 === quizData.length; // Check if it's the last question
             }
         } else {
             console.error("Error: currentQuiz está fuera de los límites de quizData.");
@@ -295,7 +195,7 @@
             setTimeout(loadQuiz, 1000);
         } else {
             console.log(`Puntaje obtenido: ${score}`);
-            if (score >= 6) {
+            if (score === 8) {
                 quiz.innerHTML = `
                     <h2>Felicitaciones!, completaste todos los niveles</h2>
                     <button onclick="window.location.href='/modulos.html'">Regresar a los modulos</button>
@@ -309,6 +209,17 @@
         }
     }
 });
+const showPopup = () => {
+    popup.style.display = "block";
+};
+
+const closePopup = () => {
+    popup.style.display = "none";
+    if (lastQuestionAnswered) {
+        displayResult();
+    }
+};
+
 
 // Función para regresar atrás 
 function goBack() {

@@ -1,10 +1,6 @@
-// user.js
 
 // Función para obtener el nombre de usuario
 function obtenerNombreUsuario() {
-    // Supongamos que aquí obtienes el nombre de usuario de alguna manera
-    // Por ejemplo, desde una variable global o desde una cookie
-    // Aquí lo he simulado simplemente con una variable
     const nombreUsuario = "Usuario Ejemplo";
     return nombreUsuario;
 }
@@ -20,7 +16,7 @@ function mostrarNombreUsuario() {
     }
 }
 
-// Llamar a la función para mostrar el nombre de usuario cuando la página se carga completamente
+
 window.onload = function() {
     mostrarNombreUsuario();
 };

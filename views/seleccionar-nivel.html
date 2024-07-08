@@ -1,12 +1,11 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Página de Aprendizaje</title>
-    <title>Módulos</title>
-    <style>
-        @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;400&display=swap");
+    <title>Seleccionar Nivel</title>
+<style>
+            @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;400&display=swap");
 
 body {
     font-family: "Poppins", sans-serif;
@@ -28,43 +27,6 @@ h1 {
     font-size: 42px;
     font-family: "Poppins", sans-serif;
 }
-
-.cards {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-wrap: wrap;
-    max-width: 900px; 
-    margin: 0 auto;
-    flex-wrap: nowrap; 
-    max-width: 100%; 
-    overflow-x: auto; 
-}
-
-.card {
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-    margin: 10px;
-    width: 200px;
-    height: 180px;
-    text-align: center;
-}
-
-.card img {
-    width: 80px; 
-    height: 60px; 
-    border-radius: 8px;
-    margin-bottom: 10px;
-    margin-top: 30px;
-}
-
-.card h2 {
-    margin: 0;
-    font-size: 18px;
-}
-
 
 .dropdown-container {
     position: absolute;
@@ -117,9 +79,9 @@ h1 {
     border: none;
     cursor: pointer;
 }
-    </style>
+</style>
 </head>
-<body> 
+<body>
     <div class="dropdown-container">
         <div class="dropdown">
             <button class="dropbtn">Nombre de Usuario</button>
@@ -129,37 +91,49 @@ h1 {
         </div>
     </div>
     <div class="container">
-        <h1>Quiero aprender:</h1>
-        <div class="cards">
-           
-            <a href="modulo-presupuesto.html" class="card">
-                <img src="budget.png" alt="Presupuesto">
-                <h2>Presupuesto</h2>
-            </a>
-            <a href="investment.html" class="card">
-                <img src="investment.png" alt="Inversión">
-                <h2>Inversión</h2>
-            </a>
-        
-        </div>
-    </div>
+    <h1>Seleccionar Nivel</h1>
+    <form id="nivelForm" action="/establecer-nivel" method="POST">
+        <!-- No necesitas el input hidden para userId aquí -->
+        <button type="submit" name="option" value="basico">Empezar desde 0</button>
+        <button type="submit" name="option" value="prueba">Tomar prueba de nivelación</button>
+    </form>
+</div>
+
     <script>
-        // Cuando la página se carga completamente
-        window.addEventListener('load', () => {
-            // Recuperar el nombre y nivel del usuario del localStorage
-            const userName = localStorage.getItem('userName');
-            const userLevel = localStorage.getItem('userLevel'); 
-            const userId = localStorage.getItem('userId');
-            // Console log para debug
-            console.log('userName:', userName);
+document.addEventListener('DOMContentLoaded', function() {
+    // Obtener el userId almacenado en localStorage
+    const userId = localStorage.getItem('userId');
+    const userName = localStorage.getItem('userName');
+    const userLevel = localStorage.getItem('userLevel'); 
+        // Console log para debug
+       
+        console.log('userName:', userName);
+           
+       console.log('userLevel:', userLevel);
             console.log('ID de usuario almacenado:', userId)
-            console.log('userLevel:', userLevel);
-    
-            // Obtener el botón del menú desplegable
-            const dropbtn = document.querySelector('.dropbtn');
-    
-            // Establecer el dropdown si hay nombre de usuario
-            if (userName) {
+          
+
+    // Verificar si userId no es null o undefined
+    if (userId) {
+        // Agregar el userId al formulario antes de enviarlo
+        const nivelForm = document.getElementById('nivelForm');
+        nivelForm.addEventListener('submit', function(event) {
+            // Agregar el userId como input hidden al formulario
+            const userIdInput = document.createElement('input');
+            userIdInput.type = 'hidden';
+            userIdInput.name = 'userId';
+            userIdInput.value = userId;
+            nivelForm.appendChild(userIdInput);
+        });
+    } else {
+        console.error('No se encontró userId en localStorage');
+    }
+
+    // Obtener el botón del menú desplegable
+    const dropbtn = document.querySelector('.dropbtn');
+
+     // Establecer el dropdown si hay nombre de usuario
+     if (userName) {
                 dropbtn.innerHTML = `Hola, <strong>${userName}</strong>`;
             }
     
@@ -177,7 +151,7 @@ h1 {
                 // Redirigir al usuario a la página de login
                 window.location.href = '/login.html';
             });
-        });
+});
     </script>
 </body>
 </html>
