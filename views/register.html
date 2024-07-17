@@ -179,7 +179,7 @@ body{
 <body>
     <div class="wrapper">
         <img src="nummus.png" alt="" width="100" height="100">
-        <form action="/registrar" method="post">      
+        <form onsubmit="registrarUsuario(event)">      
             <h1>Crea tu perfil</h1>
             <div class="input-box">
                 <input type="text" placeholder="Nombre(s)" name="name" id="name" required>
@@ -193,13 +193,42 @@ body{
                 <input type="password" placeholder="Contraseña" name="password" id="password" required>
                 <i class='bx bxs-lock-alt'></i>
             </div>
-            
             <button type="submit" class="btn">CREAR CUENTA</button>
-            <button type="submit" class="btn" onclick="window.location.href='login.html'">VOLVER</button>
+            <button type="button" class="btn" onclick="window.location.href='login.html'">VOLVER</button>
             <p>Al registrarse en Nunmus, aceptas nuestros <strong>Términos y Política de Privacidad</strong>.</p>
             <p>Esta pagina esta protegida por reCAPTCHA Enterprise. Aplican tanto la política de <strong>privacidad</strong> como los
             <strong>términos del servicio de Google</strong></p>
         </form>
     </div>
+    <script>
+      async function registrarUsuario(event) {
+            event.preventDefault();
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            try {
+                const response = await fetch('/registrar', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ name, email, password })
+                });
+
+                if (response.ok) {
+                    const mensaje = await response.text();
+                    alert(mensaje);
+                    window.location.href = 'login.html'; // Redirigir al login después del registro exitoso
+                } else {
+                    const error = await response.text();
+                    alert('Error: ' + error);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error al registrar el usuario');
+            }
+        }
+    </script>
 </body>
 </html>

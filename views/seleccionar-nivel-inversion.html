@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Seleccionar Nivel</title>
+    <title>Seleccionar Nivel de Inversión</title>
     <link rel="stylesheet" href="../../styles/seleccionar.css"> 
-
 </head>
 <body>
     <div class="dropdown-container">
@@ -21,7 +20,7 @@
         <div class="card-container">
             <div class="card">
                 <h2>Empezar desde 0</h2>
-                <p>Si no tienes conocimiento sobre presupuesto, puedes empezar desde básico.</p>
+                <p>Si no tienes conocimiento sobre inversión, puedes empezar desde básico.</p>
                 <form action="/establecer-nivel" method="POST" class="card-form">
                     <input type="hidden" name="option" value="basico">
                     <button type="submit" class="btn">Empezar</button>
@@ -37,7 +36,6 @@
             </div>
         </div>
     </div>
-   
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Recuperar el nombre y nivel del usuario del localStorage
@@ -99,9 +97,9 @@
                                 // Actualizar userLevel en localStorage si la opción es 'basico'
                                 if (option === 'basico') {
                                     localStorage.setItem('userLevel', 'basico');
-                                    window.location.href = '/modulo-presupuesto.html';
+                                    window.location.href = '/modulo-inversion.html';
                                 } else if (option === 'prueba') {
-                                    window.location.href = '/budget.html';
+                                    window.location.href = '/investment.html';
                                 }
                             } else {
                                 const errorMessage = await response.text();

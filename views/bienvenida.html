@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bienvenido a Nummus</title>
+    <link rel="stylesheet" href="../../styles/style4.css"> 
+</head>
+<body>
+    <div class="dropdown-container">
+        <div class="dropdown">
+            <button class="dropbtn">Nombre de Usuario</button>
+            <div class="dropdown-content">
+                <a href="#" id="logout">Cerrar sesión</a>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <h1>Bienvenido!</h1>
+        <img src="nummus.png" alt="" width="150" height="150"style="margin-top: 20px; margin-bottom: 20px;">
+        <h3>Sobre que te gustaria aprender:</h3>
+        <div class="card-container">
+            <div class="card">
+                <h2>Presupuesto</h2>
+                <p>Aprende cómo gestionar tus finanzas personales.</p>
+                <a href="/seleccionar-nivel.html" class="btn">Empezar</a>
+            </div>
+            <div class="card">
+                <h2>Inversión</h2>
+                <p>Descubre cómo invertir y hacer crecer tu dinero.</p>
+                <a href="/seleccionar-nivel-inversion.html" class="btn">Empezar</a>
+            </div>
+        </div>
+    </div>
+    <script>
+        // Cuando la página se carga completamente
+        window.addEventListener('load', () => {
+            // Recuperar el nombre y nivel del usuario del localStorage
+            const userName = localStorage.getItem('userName');
+            const userLevel = localStorage.getItem('userLevel'); 
+            const userId = localStorage.getItem('userId');
+            // Console log para debug
+            console.log('userName:', userName);
+            console.log('ID de usuario almacenado:', userId)
+            console.log('userLevel:', userLevel);
+    
+            // Obtener el botón del menú desplegable
+            const dropbtn = document.querySelector('.dropbtn');
+    
+            // Establecer el dropdown si hay nombre de usuario
+            if (userName) {
+                dropbtn.innerHTML = `Hola, <strong>${userName}</strong>`;
+            }
+    
+            // Obtener "Cerrar sesión"
+            const logoutLink = document.getElementById('logout');
+    
+            // Agregar un event listener para el enlace de "Cerrar sesión"
+            logoutLink.addEventListener('click', (event) => {
+                event.preventDefault();
+    
+                // Eliminar los datos del localStorage
+                localStorage.removeItem('userName');
+                localStorage.removeItem('userLevel');
+    
+                // Redirigir al usuario a la página de login
+                window.location.href = '/login.html';
+            });
+        });
+    </script>
+</body>
+</html>
